@@ -32,16 +32,14 @@ class LinkedList:
             self.add_start(new_val)
         else:
             cur = self.head
-            prev = None
-
-            while cur and cur.val != val:
-                prev = cur
-                cur = cur.next
-
-            if cur is not None:
-                new_node = Node(new_val)
-                prev.next = new_node
-                new_node.next = cur
+            while cur.next:
+                if cur.next.val == val:
+                    new_node = Node(new_val)
+                    new_node.next = cur.next
+                    cur.next = new_node
+                    return
+                else:
+                    cur = cur.next
 
     def add_after(self, val, new_val):
         if not self.head:
@@ -60,22 +58,21 @@ class LinkedList:
                 cur.next = new_node
 
     def delete(self, val):
-        cur = self.head
-        prev = None
-
         if self.head and self.head.val == val:
             self.head = self.head.next
             return
 
-        while cur and cur.val != val:
-            prev = cur
-            cur = cur.next
+        cur = self.head
+
+        while cur.next:
+            if cur.next.val == val:
+                if self.tail == cur.next:
+                    self.tail = cur
+                cur.next = cur.next.next
+                return
+            else:
+                cur = cur.next
         
-        if cur:
-            if self.tail == cur:
-                self.tail = prev
-                
-            prev.next = cur.next
 
     def find(self, val):
         cur = self.head
