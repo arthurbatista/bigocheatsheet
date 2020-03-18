@@ -18,12 +18,16 @@ def bubble_down(heap):
     while idx * 2 + 1 < len(heap):
         left = (idx + 1) * 2 - 1
         right = (idx + 1) * 2
-        if heap[idx] > heap[left]:
-            swap(heap, idx, left)
-            idx = left
-        elif heap[idx] > heap[right]:
-            swap(heap, idx, right)
-            idx = right
+
+        min_idx = None
+        if heap[left] < heap[right]:
+            min_idx = left
+        else:
+            min_idx = right
+
+        if heap[idx] > heap[min_idx]:
+            swap(heap, idx, min_idx)
+            idx = min_idx
         else:
             break
 
