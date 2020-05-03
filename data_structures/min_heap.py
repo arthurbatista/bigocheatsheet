@@ -1,57 +1,65 @@
-def swap(heap, i, j):
-    tmp = heap[i]
-    heap[i] = heap[j]
-    heap[j] = tmp
+class MinHeap:
 
-def bubble_up(heap):
-    idx = len(heap) - 1
-    while idx > 0:
-        parent_idx = int(idx/2)
-        if heap[idx] < heap[parent_idx]:
-            swap(heap, idx, parent_idx)
-            idx = parent_idx
-        else:
-            break
+    def __init__(self):
+        self._list = []
 
-def bubble_down(heap):
-    idx = 0
-    while idx * 2 + 1 < len(heap):
-        left = (idx + 1) * 2 - 1
-        right = (idx + 1) * 2
+    def swap(self, i, j):
+        tmp = self._list[i]
+        self._list[i] = self._list[j]
+        self._list[j] = tmp
 
-        min_idx = None
-        if heap[left] < heap[right]:
-            min_idx = left
-        else:
-            min_idx = right
+    def bubble_up(self):
+        child = len(self._list) - 1
 
-        if heap[idx] > heap[min_idx]:
-            swap(heap, idx, min_idx)
-            idx = min_idx
-        else:
-            break
+        while child > 0:
+            parent = int((child - 1) / 2)
+            if self._list[child] < self._list[parent]:
+                self.swap(child, parent)
+                child = parent
+            else:
+                break
 
-def insert(heap, data):
-    heap.append(data)
-    bubble_up(heap)
+    def add(self, value):
+        self._list.append(value)
+        self.bubble_up()
 
-def extract_min(heap):
-    heap[0] = heap[-1]
-    heap.pop()
-    bubble_down(heap)
+    def bubble_down(self, parent):
+        child = parent * 2 + 1
 
-heap = []
-insert(heap, 2)
-insert(heap, 3)
-insert(heap, 4)
-insert(heap, 5)
-insert(heap, 6)
-insert(heap, 7)
-insert(heap, 8)
-insert(heap, 1)
+        while child < len(self._list) - 1:
+            right_child = parent * 2 + 2
 
-print(heap)
+            if right_child < len(self._list) - 1 and self._list[child] > self._list[right_child]:
+                child = self._list[right_child]
 
-extract_min(heap)
+            if self._list[parent] > self._list[child]:
+                self.swap(parent, child)
+                parent = child
+            else:
+                break
 
-print(heap)
+    def remove(self, value):
+        parent = 0
+        for i in range(len(self._list)):
+            if self._list[i] == value:
+                parent = i
+                break
+
+        self._list[parent] = self._list.pop()
+        self.bubble_down(parent)
+
+
+min_heap = MinHeap()
+min_heap.add(5)
+min_heap.add(2)
+min_heap.add(3)
+min_heap.add(6)
+min_heap.add(7)
+min_heap.add(8)
+min_heap.add(1)
+
+print(min_heap._list)
+
+min_heap.remove(1)
+
+print(min_heap._list)

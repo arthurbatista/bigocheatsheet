@@ -1,111 +1,118 @@
 class Node:
-    def __init__(self, data):
-        self.data = data
+    def __init__(self, value):
+        self.value = value
         self.left = None
         self.right = None
+
 
 class BST:
     def __init__(self):
         self.root = None
 
-    def insert(self, data):
-        if not self.root:
-            self.root = Node(data)
-        else:
-            node = self.root
+    def add(self, value):
+        node = Node(value)
 
-            while node:
-                if data < node.data:
-                    if node.left:
-                        node = node.left
+        if not self.root:
+            self.root = node
+        else:
+            tmp = self.root
+
+            while tmp:
+                if value < tmp.value:
+                    if tmp.left:
+                        tmp = tmp.left
                     else:
-                        node.left = Node(data)
-                        return
+                        tmp.left = node
+                        break
                 else:
-                    if node.right:
-                        node = node.right
+                    if tmp.right:
+                        tmp =  tmp.right
                     else:
-                        node.right = Node(data)
-                        return
+                        tmp.right = node
+                        break
 
-    def __insert_recursively(self, node, data):
-        if data < node.data:
-            if node.left:
-                self.__insert_recursively(node.left, data)
+    def r_add(self, value):
+        def __add(node, _value):
+            if not node:
+                return Node(value)
+            elif _value < node.value:
+                node.left = __add(node.left, _value)
             else:
-                node.left = Node(data)
-        else:
-            if node.right:
-                self.__insert_recursively(node.right, data)
-            else:
-                node.right = Node(data)
+                node.right = __add(node.right, _value)
+            return node
 
-    def insert_recursively(self, data):
-        if not self.root:
-            self.root = Node(data)
-        else:
-            self.__insert_recursively(self.root, data)
+        self.root = __add(self.root, value)
 
-    def print_transversal_inorder(self):
+    def print_transversal(self):
         stack = []
-        current_node = self.root
+        tmp = self.root
 
-        while current_node or stack:
-            if current_node:
-                stack.append(current_node)
-                current_node = current_node.left
+        while tmp or stack:
+
+            if tmp:
+                stack.append(tmp)
+                tmp = tmp.left
             else:
                 tmp = stack.pop()
-                print(tmp.data, end=' ')
-                current_node = tmp.right
+                print(tmp.value, end=' ')
+                tmp = tmp.right
         print('\n')
 
-    def print_transversal_inorder_recursively(self, node):
-        if node.left:
-            self.print_transversal_inorder_recursively(node.left)
+    def r_print_transversal(self):
 
-        print(node.data)
+        def __print(node):
+            if node:
+                __print(node.left)
+                print(node.value, end=' ')
+                __print(node.right)
+        print('\n')
 
-        if node.right:
-            self.print_transversal_inorder_recursively(node.right)
+        __print(self.root)
 
-    def get_first_inorder(self, node):
-        while node:
-            if node.left:
-                node = node.left
+
+    def delete(self, value):
+
+        def __get_left_most(node):
+            while node:
+                if node.left:
+                    node = node.left
+                else:
+                    return node.value
+
+        def __delete(node, _value):
+            if _value == node.value:
+                if node.left and node.right:
+                    new_value = __get_left_most(node.right)
+                    __delete(node, new_value)
+                    node.value = new_value
+                elif node.left:
+                    return node.left
+                elif node.right:
+                    return node.right
+                else:
+                    return None
+
+            elif _value < node.value:
+                node.left = __delete(node.left, _value)
             else:
-                return node
+                node.right = __delete(node.right, _value)
 
-    def delete_recursively(self, node, data):
-        if data < node.data:
-            node.left = self.delete_recursively(node.left, data)
-        elif data > node.data:
-            node.right = self.delete_recursively(node.right, data)
-        else:
-            if node.right and node.left:
-                first_inorder = self.get_first_inorder(node.right)
-                node.data = first_inorder.data
-                node.right = self.delete_recursively(node.right, node.data)
-            elif node.left:
-                return node.left
-            else:
-                return node.right
-        return node
+            return node
+
+        __delete(self.root, value)
 
 
 bst = BST()
-bst.insert_recursively(10)
-bst.insert_recursively(5)
-bst.insert_recursively(15)
-bst.insert_recursively(2)
-bst.insert_recursively(6)
+bst.r_add(5)
+bst.r_add(2)
+bst.add(7)
+bst.add(1)
+bst.r_add(3)
+bst.add(6)
+bst.r_add(8)
+bst.r_add(9)
 
-bst.print_transversal_inorder()
-
-# bst.delete_recursively(bst.root, 2)
-# bst.delete_recursively(bst.root, 6)
-bst.delete_recursively(bst.root, 10)
-
-bst.print_transversal_inorder()
-
-print('Done!')
+# bst.print_transversal()
+bst.r_print_transversal()
+# bst.delete(5)
+# bst.print_transversal()
