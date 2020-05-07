@@ -11,6 +11,51 @@ def contains_unique(word):
 # print(contains_unique('arthur'))
 # print(contains_unique('tolkien'))
 
+# 1.2 Check Permutation
+# given two string, check if one is a permutation of other
+# another way to implement is sorting and comparing both strings
+#   it is simple but not so efficient
+def check_string_permutation(str_1, str_2):
+    if len(str_1) != len(str_2):
+        return False
+
+    if str_1 == str_2:
+        return True
+    
+    chars = [0 for i in range(0, 128)]
+    for i in str_1:
+        w = ord(i)
+        chars[w] += 1
+
+    for i in str_2:
+        w = ord(i)
+        chars[w] -= 1
+        if chars[w] < 0:
+            return False
+
+    return True
+
+# print(check_string_permutation('arthur', 'ruhtra'))
+# print(check_string_permutation('arthur', 'ruhtr'))
+
+# 1.3 URLify
+def urlfy(_str):
+    result = ''
+    for c in _str:
+        if len(result) == len(_str):
+            break
+        if c == ' ':
+            if result == '':
+                continue
+            if len(result) < 3 or result[:-3] != '%20':
+                result += '%20'
+        else:
+            result += c
+    return result
+
+# print(urlfy('Mr John Smith    '))
+# print(urlfy(' M r John Smith     '))
+
 # 1.4 Palindrome
 # Check if a given string contais a palindrome
 def contains_palindrome(array):
