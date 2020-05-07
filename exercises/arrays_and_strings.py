@@ -112,10 +112,49 @@ def one_away(term_1, term_2):
 
     return True
 
-print(one_away('pale', 'ple'))
-print(one_away('pales', 'pale'))
-print(one_away('pale', 'pales'))
-print(one_away('pale', 'bale'))
-print(one_away('pale', 'bake'))
-print(one_away('apple', 'aple'))
+# print(one_away('pale', 'ple'))
+# print(one_away('pales', 'pale'))
+# print(one_away('pale', 'pales'))
+# print(one_away('pale', 'bale'))
+# print(one_away('pale', 'bake'))
+# print(one_away('apple', 'aple'))
 
+
+# 1.6 String Compression
+def string_compression(_str):
+
+    def __calc_compression_size(_str):
+        size = count = 0
+
+        for i in range(len(_str)):
+            count += 1
+
+            if i + 1 >= len(_str) or _str[i] != _str[i + 1]:
+                size += 1 + len(str(count))
+                count = 0
+
+        return size
+
+    size = __calc_compression_size(_str)
+    if size >= len(_str):
+        return _str
+
+    result = [None for x in range(size)]
+    result_pointer = 0
+    count = 0
+
+    for i in range(len(_str)):
+        count += 1
+        
+        if i + 1 >= len(_str) or _str[i] != _str[i + 1]:
+            result[result_pointer] = _str[i]
+            result[result_pointer + 1] = str(count)
+            count = 0
+            result_pointer += 2
+
+    return ''.join(result)
+
+print(string_compression('arthur'))
+print(string_compression('aaaaaaaarthur'))
+print(string_compression('aaaabbbccd'))
+# print(string_compression('aaaa'))
