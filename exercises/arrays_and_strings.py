@@ -158,3 +158,94 @@ print(string_compression('arthur'))
 print(string_compression('aaaaaaaarthur'))
 print(string_compression('aaaabbbccd'))
 # print(string_compression('aaaa'))
+
+# 1.7 Rotate Matrix
+# Rotate Matrix 90 degrees
+# Do it by rotating from external layer to inner layer
+def rotate_matrix():
+    def rotate(matrix, new_matrix, layer):
+        start = 0 + layer
+        end = len(matrix) - 1 - layer
+        for x in range(start, end + 1):
+            new_matrix[x][end] = matrix[start][x]
+            new_matrix[x][start] = matrix[end][x]
+            new_matrix[end][end - x] = matrix[start + x][end]
+            new_matrix[start][end - x] = matrix[start + x][start]
+
+    matrix = [
+        [1, 1, 1, 2],
+        [4, 5, 5, 2],
+        [4, 6, 6, 2],
+        [4, 3, 3, 3]
+    ]
+
+    new_matrix = [
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0]
+    ]
+
+    for x in range(len(matrix) - 2):
+        rotate(matrix, new_matrix, x)
+
+    for l in new_matrix:
+        print(l)
+
+# rotate_matrix() 
+
+# 1.8 Zero Matrix
+# Given a matrix, set to Zero the rows and columns of
+# a cell when it is Zero.
+# The solution set the top cell and most left cell of a cell when it is Zero.
+# After that, iterates over the firs row and fisrt colunm to find cells with Zero.
+def set_row_column_to_zero():
+    matrix = [
+        [1, 1, 1, 1],
+        [0, 1, 1, 1],
+        [1, 1, 1, 1],
+        [1, 1, 1, 1]
+    ]
+
+    def zerofy_row(matrix, r):
+        for i in range(len(matrix[r])):
+            matrix[r][i] = 0
+
+    def zerofy_column(matrix, c):
+        for i in range(len(matrix)):
+            matrix[i][c] = 0
+
+    row_has_zero = col_has_zero = False
+
+    for i in matrix[0]:
+        if i == 0:
+            row_has_zero = True
+
+    for i in range(len(matrix)):
+        if matrix[i][0] == 0:
+            col_has_zero = True
+
+    for x in range(1, len(matrix)):
+        for y in range(1, len(matrix[x])):
+            if matrix[x][y] == 0:
+                matrix[0][y] = 0
+                matrix[x][0] = 0
+
+    for i in range(1, len(matrix[0])):
+        if matrix[0][i] == 0:
+            zerofy_column(matrix, i)
+
+    for i in range(1, len(matrix)):
+        if matrix[i][0] == 0:
+            zerofy_row(matrix, i)
+
+    if row_has_zero:
+        zerofy_row(matrix, 0)
+
+    if col_has_zero:
+        zerofy_column(matrix, 0)
+
+    for l in matrix:
+        print(l)
+
+# set_row_column_to_zero()
