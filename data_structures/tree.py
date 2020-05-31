@@ -82,17 +82,34 @@ class Tree:
         if node_to_delete:
             print(node_to_delete.data, deepest_rightmost.data)
 
+    def breadth_first_search(self, node):
+
+        queue = [node]
+
+        while queue:
+
+            current_node = queue.pop(0)
+
+            print(current_node.data)
+
+            if current_node.left:
+                queue.append(current_node.left)
+
+            if current_node.right:
+                queue.append(current_node.right)
+
+
     
 tree = Tree(1)
 tree.insert(2)
 tree.insert(3)
-tree.insert(4)
-tree.insert(5)
-tree.insert(6)
-tree.transversal_inorder_recursively(tree.root)
-print('\n')
-tree.transversal_inorder_satck(tree.root)
-print('\n')
-print(tree.get_height(tree.root))
-
+# tree.insert(4)
+# tree.insert(5)
+# tree.insert(6)
+# tree.transversal_inorder_recursively(tree.root)
+# print('\n')
+# tree.transversal_inorder_satck(tree.root)
+# print('\n')
+# print(tree.get_height(tree.root))
+tree.breadth_first_search(tree.root)
 # tree.delete(2)
