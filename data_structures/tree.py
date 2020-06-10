@@ -47,50 +47,87 @@ class Tree:
         if node.right:
             self.transversal_inorder_recursively(node.right)
 
+    # left -> root -> right
+    # stack is used just to store the parent node and get its children afterwards
+    # tmp_node is used to store the node that will be processed
     def transversal_inorder_satck(self, node):
         stack = []
         tmp_node = node
 
-        while True:
-            
+        while tmp_node or stack:
             if tmp_node:
                 stack.append(tmp_node)
                 tmp_node = tmp_node.left
-            elif (stack):
+            elif stack:
                 tmp_node = stack.pop()
                 print(tmp_node.data, end=' ')
                 tmp_node = tmp_node.right
-            else:
-                break
-                
-    def delete(self, data):
-        _list = [self.root]
-        node_to_delete = None
-        deepest_rightmost = None
-        while _list:
-            deepest_rightmost = _list.pop(0)
 
-            if deepest_rightmost.data == data:
-                node_to_delete = deepest_rightmost
+    def transversal_preorder(self, node):
+        stack = [node]
 
-            if deepest_rightmost.left:
-                _list.append(deepest_rightmost.left)
+        while stack:
+            tmp_node = stack.pop()
+            print(tmp_node.data, end=' ')
 
-            if deepest_rightmost.right:
-                _list.append(deepest_rightmost.right)
+            if tmp_node.right:
+                stack.append(tmp_node.right)
+            if tmp_node.left:
+                stack.append(tmp_node.left)
 
-        if node_to_delete:
-            print(node_to_delete.data, deepest_rightmost.data)
+    # left -> right -> root
+    def transversal_postorder(self, node):
+        stack = [node]
+        stack_out = []
+
+        while stack:
+            tmp_node = stack.pop()
+            stack_out.append(tmp_node)
+            
+            if tmp_node.left:
+                stack.append(tmp_node.left)
+            if tmp_node.right:
+                stack.append(tmp_node.right)
+
+        while stack_out:
+            tmp_node = stack_out.pop()
+            print(tmp_node.data, end=' ')
+
+    def get_right_most(self, node):
+        if node.right:
+            return self.get_right_most(node.right)
+        else:
+            return node.data
+
+    def delete(self, tmp_node, data):
+        if tmp_node.data == data:
+            if tmp_node.left and tmp_node.right:
+                tmp_node.data = self.get_right_most(tmp_node.left)
+                tmp_node.left = self.delete(tmp_node.left, tmp_node.data)
+                return tmp_node
+            if tmp_node.left:
+                return tmp_node.left
+            elif tmp_node.right:
+                return tmp_node.right
+
+            return None
+
+        if tmp_node.left:
+            tmp_node.left =  self.delete(tmp_node.left, data)
+
+        if tmp_node.right:
+            tmp_node.right =  self.delete(tmp_node.right, data)
+
+        return tmp_node
 
     def breadth_first_search(self, node):
 
         queue = [node]
 
         while queue:
-
             current_node = queue.pop(0)
 
-            print(current_node.data)
+            print(current_node.data, end=' ')
 
             if current_node.left:
                 queue.append(current_node.left)
@@ -98,18 +135,25 @@ class Tree:
             if current_node.right:
                 queue.append(current_node.right)
 
-
     
 tree = Tree(1)
 tree.insert(2)
 tree.insert(3)
-# tree.insert(4)
-# tree.insert(5)
+tree.insert(4)
+tree.insert(5)
 # tree.insert(6)
+# tree.insert(7)
 # tree.transversal_inorder_recursively(tree.root)
 # print('\n')
 # tree.transversal_inorder_satck(tree.root)
 # print('\n')
 # print(tree.get_height(tree.root))
 tree.breadth_first_search(tree.root)
-# tree.delete(2)
+print('\n')
+tmp = tree.delete(tree.root, 3)
+tree.breadth_first_search(tmp)
+print('\n')
+
+
+# tree.transversal_preorder(tree.root)
+# tree.transversal_postorder(tree.root)

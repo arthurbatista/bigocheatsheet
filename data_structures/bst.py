@@ -43,12 +43,11 @@ class BST:
 
         self.root = __add(self.root, value)
 
-    def print_transversal(self):
+    def transversal_inorder(self):
         stack = []
         tmp = self.root
 
         while tmp or stack:
-
             if tmp:
                 stack.append(tmp)
                 tmp = tmp.left
@@ -56,6 +55,40 @@ class BST:
                 tmp = stack.pop()
                 print(tmp.value, end=' ')
                 tmp = tmp.right
+        print('\n')
+
+    def transversal_preorder(self):
+        stack = [self.root]
+
+        while stack:
+            tmp_node = stack.pop()
+            print(tmp_node.value, end=' ')
+
+            if tmp_node.right:
+                stack.append(tmp_node.right)
+            if tmp_node.left:
+                stack.append(tmp_node.left)
+
+        print('\n')
+
+    # left -> right -> root
+    def transversal_postorder(self):
+        stack = [self.root]
+        stack_out = []
+
+        while stack:
+            tmp_node = stack.pop()
+            stack_out.append(tmp_node)
+            
+            if tmp_node.left:
+                stack.append(tmp_node.left)
+            if tmp_node.right:
+                stack.append(tmp_node.right)
+
+        while stack_out:
+            tmp_node = stack_out.pop()
+            print(tmp_node.value, end=' ')
+
         print('\n')
 
     def r_print_transversal(self):
@@ -112,7 +145,8 @@ bst.add(6)
 bst.r_add(8)
 bst.r_add(9)
 
-# bst.print_transversal()
-bst.r_print_transversal()
-# bst.delete(5)
-# bst.print_transversal()
+# bst.r_print_transversal()
+# bst.delete(i)
+bst.transversal_inorder()
+bst.transversal_preorder()
+bst.transversal_postorder()
