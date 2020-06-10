@@ -43,6 +43,9 @@ class BST:
 
         self.root = __add(self.root, value)
 
+    # left -> root -> right
+    # stack is used just to store the parent node and get its children afterwards
+    # tmp_node is used to store the node that will be processed
     def transversal_inorder(self):
         stack = []
         tmp = self.root
@@ -57,6 +60,7 @@ class BST:
                 tmp = tmp.right
         print('\n')
 
+    # root -> left -> right
     def transversal_preorder(self):
         stack = [self.root]
 

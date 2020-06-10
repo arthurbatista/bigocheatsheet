@@ -63,6 +63,7 @@ class Tree:
                 print(tmp_node.data, end=' ')
                 tmp_node = tmp_node.right
 
+    # root -> left -> right
     def transversal_preorder(self, node):
         stack = [node]
 
