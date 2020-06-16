@@ -15,19 +15,19 @@ class Tree:
         '''
         _list = [self.root]
         while(_list):
-            node = _list.pop(0)
+            node = _list.pop()
 
-            if node.left:
-                _list.append(node.left)
-            else:
+            if not node.left:
                 node.left = Node(data)
                 break
-
-            if node.right:
-                _list.append(node.right)
-            else:
+            elif not node.right:
                 node.right = Node(data)
                 break
+            
+            if node.right:
+                _list.append(node.right)
+            if node.left:
+                _list.append(node.left)
 
     def get_height(self, node):
         left, right = 1, 1
@@ -94,32 +94,37 @@ class Tree:
             tmp_node = stack_out.pop()
             print(tmp_node.data, end=' ')
 
-    def get_right_most(self, node):
-        if node.right:
-            return self.get_right_most(node.right)
-        else:
-            return node.data
+    def delete(self, _data):
+        def __get_right_most(node):
+            if node.right:
+                return self.get_right_most(node.right)
+            else:
+                return node
 
-    def delete(self, tmp_node, data):
-        if tmp_node.data == data:
-            if tmp_node.left and tmp_node.right:
-                tmp_node.data = self.get_right_most(tmp_node.left)
-                tmp_node.left = self.delete(tmp_node.left, tmp_node.data)
-                return tmp_node
-            if tmp_node.left:
-                return tmp_node.left
-            elif tmp_node.right:
-                return tmp_node.right
+        def __delete(node, data):
+            if node.data == data:
+                if not node.left:
+                    tmp = node.right
+                    node = None
+                    return tmp
+                elif not node.right:
+                    tmp = node.left
+                    node = None
+                    return tmp
+                
+                tmp = __get_right_most(node.left)
+                node.data = tmp.data
+                node.left = __delete(node.left, tmp.data)
+            else:
+                if node.left:
+                    node.left = __delete(node.left, data)
 
-            return None
+                if node.right:
+                    node.right = __delete(node.right, data)
 
-        if tmp_node.left:
-            tmp_node.left =  self.delete(tmp_node.left, data)
+            return node
 
-        if tmp_node.right:
-            tmp_node.right =  self.delete(tmp_node.right, data)
-
-        return tmp_node
+        self.root = __delete(self.root, _data)
 
     def breadth_first_search(self, node):
 
@@ -146,13 +151,13 @@ tree.insert(5)
 # tree.insert(7)
 # tree.transversal_inorder_recursively(tree.root)
 # print('\n')
-# tree.transversal_inorder_satck(tree.root)
+# # tree.transversal_inorder_satck(tree.root)
 # print('\n')
 # print(tree.get_height(tree.root))
 tree.breadth_first_search(tree.root)
 print('\n')
-tmp = tree.delete(tree.root, 3)
-tree.breadth_first_search(tmp)
+tree.delete(2)
+tree.breadth_first_search(tree.root)
 print('\n')
 
 

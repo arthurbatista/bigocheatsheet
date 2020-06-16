@@ -114,43 +114,46 @@ class BST:
                 if node.left:
                     node = node.left
                 else:
-                    return node.value
+                    return node
 
         def __delete(node, _value):
             if _value == node.value:
-                if node.left and node.right:
-                    new_value = __get_left_most(node.right)
-                    __delete(node, new_value)
-                    node.value = new_value
-                elif node.left:
-                    return node.left
-                elif node.right:
-                    return node.right
-                else:
-                    return None
-
-            elif _value < node.value:
-                node.left = __delete(node.left, _value)
+                if not node.left:
+                    tmp = node.right
+                    node = None
+                    return tmp
+                elif not node.right:
+                    tmp = node.left
+                    node = None
+                    return tmp
+                
+                tmp = __get_left_most(node.right)
+                node.value = tmp.value
+                node.right = __delete(node.right, tmp.value)
             else:
-                node.right = __delete(node.right, _value)
+                if _value < node.value:
+                    node.left = __delete(node.left, _value)
+                else:
+                    node.right = __delete(node.right, _value)
 
             return node
 
-        __delete(self.root, value)
+        self.root = __delete(self.root, value)
 
 
 bst = BST()
-bst.r_add(5)
-bst.r_add(2)
+bst.add(5)
+bst.add(2)
 bst.add(7)
 bst.add(1)
-bst.r_add(3)
-bst.add(6)
-bst.r_add(8)
-bst.r_add(9)
+bst.add(3)
+# bst.add(6)
+# bst.r_add(8)
+# bst.r_add(9)
 
 # bst.r_print_transversal()
-# bst.delete(i)
 bst.transversal_inorder()
-bst.transversal_preorder()
-bst.transversal_postorder()
+bst.delete(2)
+bst.transversal_inorder()
+# bst.transversal_preorder()
+# bst.transversal_postorder()
