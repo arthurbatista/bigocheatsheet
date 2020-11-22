@@ -108,35 +108,31 @@ class BST:
 
 
     def delete(self, value):
-
         def __get_left_most(node):
             while node:
                 if node.left:
                     node = node.left
                 else:
-                    return node
-
-        def __delete(node, _value):
-            if _value == node.value:
-                if not node.left:
-                    tmp = node.right
-                    node = None
-                    return tmp
-                elif not node.right:
-                    tmp = node.left
-                    node = None
-                    return tmp
-                
-                tmp = __get_left_most(node.right)
-                node.value = tmp.value
-                node.right = __delete(node.right, tmp.value)
-            else:
-                if _value < node.value:
-                    node.left = __delete(node.left, _value)
-                else:
-                    node.right = __delete(node.right, _value)
-
+                    break
             return node
+
+        def __delete(node, value):
+            if node.value == value:
+                if node.left and node.right:
+                    tmp = __get_left_most(node.right)
+                    node.value = tmp.value
+                    node.right = __delete(node.right, tmp.value)
+                    return node
+                elif node.left:
+                    return node.left
+                elif node.right:
+                    return node.right
+            else:
+                if value < node.value:
+                    node.left = __delete(node.left, value)
+                else:
+                    node.right = __delete(node.right, value)
+                return node
 
         self.root = __delete(self.root, value)
 
