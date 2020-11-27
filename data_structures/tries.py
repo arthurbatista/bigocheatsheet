@@ -33,7 +33,8 @@ class Tries:
                 print('Prefix NOT found!')
                 return
 
-        print('Prefix found!', current_level[prefix[-1]].count, current_level[prefix[-1]].end)
+        print('Prefix found!', current_level[prefix[-1]].count,
+              current_level[prefix[-1]].end)
 
 
 tries = Tries()

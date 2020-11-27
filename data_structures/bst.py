@@ -44,54 +44,54 @@ class BST:
         self.root = __add(self.root, value)
 
     # left -> root -> right
-    # stack is used just to store the parent node and get its children afterwards
-    # tmp_node is used to store the node that will be processed
-    def transversal_inorder(self):
+    # Add current to stack
+    # current = current.left
+    def inorder(self):
         stack = []
-        tmp = self.root
+        current = self.root
 
-        while tmp or stack:
-            if tmp:
-                stack.append(tmp)
-                tmp = tmp.left
+        while current or stack:
+            if current:
+                stack.append(current)
+                current = current.left
             else:
-                tmp = stack.pop()
-                print(tmp.value, end=' ')
-                tmp = tmp.right
+                current = stack.pop()
+                print(current.value, end=' ')
+                current = current.right
         print('\n')
 
     # root -> left -> right
-    def transversal_preorder(self):
+    def preorder(self):
         stack = [self.root]
 
         while stack:
-            tmp_node = stack.pop()
-            print(tmp_node.value, end=' ')
+            current = stack.pop()
+            print(current.value, end=' ')
 
-            if tmp_node.right:
-                stack.append(tmp_node.right)
-            if tmp_node.left:
-                stack.append(tmp_node.left)
+            if current.right:
+                stack.append(current.right)
+            if current.left:
+                stack.append(current.left)
 
         print('\n')
 
     # left -> right -> root
-    def transversal_postorder(self):
+    def postorder(self):
         stack = [self.root]
         stack_out = []
 
         while stack:
-            tmp_node = stack.pop()
-            stack_out.append(tmp_node)
+            current = stack.pop()
+            stack_out.append(current)
             
-            if tmp_node.left:
-                stack.append(tmp_node.left)
-            if tmp_node.right:
-                stack.append(tmp_node.right)
+            if current.left:
+                stack.append(current.left)
+            if current.right:
+                stack.append(current.right)
 
         while stack_out:
-            tmp_node = stack_out.pop()
-            print(tmp_node.value, end=' ')
+            current = stack_out.pop()
+            print(current.value, end=' ')
 
         print('\n')
 
@@ -148,8 +148,8 @@ bst.add(3)
 # bst.r_add(9)
 
 # bst.r_print_transversal()
-bst.transversal_inorder()
+bst.inorder()
 bst.delete(2)
-bst.transversal_inorder()
+bst.inorder()
 # bst.transversal_preorder()
 # bst.transversal_postorder()
